@@ -24,10 +24,24 @@ class App extends Component {
 
   //NEW --START
   create = (e) => {
-    e.prevent.Default();
-    fetch('http://localhost:3001/api/v1/books', {
+    // e.prevent.Default();
+    fetch("http://localhost:3001/api/v1/books", {
       "method": "POST",
+      "headers": {
+        "content-type": "application/json",
+        "accept": "application/json"
+      },
+      "body": JSON.stringify({
+        author: this.state.author,
+      })
     })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   handleChange(changeObject) {
@@ -47,6 +61,7 @@ class App extends Component {
           </li>
         )}
         <hr />
+        {/* NEW -- START */}
         <h1>Input Book</h1>
         <label htmlFor="name">
           Author Name:
@@ -60,7 +75,8 @@ class App extends Component {
         </label>
         <button className="btn btn-primary" type="button" onClick={(e) => this.create(e)}>
           Add
-        </button>  
+        </button> 
+        {/* NEW -- END  */}
       </div>
       
     );
