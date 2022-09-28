@@ -7,28 +7,62 @@ class App extends Component {
     super(props)
 
     this.state = {
-      books: []
+      books: [],
+      title: '', //NEW
+      author: '', //NEW
+      rating: '' //NEW
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
 
     fetch('http://localhost:3001/api/v1/books')
       .then(response => response.json())
       .then(books => this.setState({ books }));
   }
 
+
+  //NEW --START
+  create = (e) => {
+    e.prevent.Default();
+    fetch('http://localhost:3001/api/v1/books', {
+      "method": "POST",
+    })
+  }
+
+  handleChange(changeObject) {
+    this.setState(changeObject)
+  }
+  //NEW --END
+
+
   render() {
     return (
-      <div>
-      {this.state.books.map((book, index) => 
-        <li key={index}>
-          <h3>{book.author}</h3>
-          <h3>{book.title}</h3>
-          <h3>{book.rating}</h3>
-        </li>
-      )}
+      //View All Books
+      <div className="container">
+        <h1>All Books</h1>
+        {this.state.books.map((book, index) => 
+          <li key={index}>
+            <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating}</h3>
+          </li>
+        )}
+        <hr />
+        <h1>Input Book</h1>
+        <label htmlFor="name">
+          Author Name:
+          <input
+            name="author"
+            id="author"
+            type="text"
+            className="form-control"
+            value={this.state.author}
+            onChange={(e) => this.handleChange ({author: e.target.value})} required />
+        </label>
+        <button className="btn btn-primary" type="button" onClick={(e) => this.create(e)}>
+          Add
+        </button>  
       </div>
+      
     );
   }
 }
