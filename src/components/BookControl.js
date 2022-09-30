@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import './App.css';
+import React from 'react';
 
-class App extends Component {
+class BookControl extends React.Component {
 
   constructor(props) {
     super(props)
@@ -33,6 +32,8 @@ class App extends Component {
       },
       "body": JSON.stringify({
         author: this.state.author,
+        title: this.state.title,
+        rating: this.state.rating
       })
     })
     .then(response => response.json())
@@ -63,7 +64,8 @@ class App extends Component {
         <hr />
         {/* NEW -- START */}
         <h1>Input Book</h1>
-        <label htmlFor="name">
+        {/* AUTHOR */}
+        <label htmlFor="author">
           Author Name:
           <input
             name="author"
@@ -73,8 +75,30 @@ class App extends Component {
             value={this.state.author}
             onChange={(e) => this.handleChange ({author: e.target.value})} required />
         </label>
+        {/* TITLE */}
+        <label htmlFor="title">
+          Title:
+          <input
+            name="title"
+            id="title"
+            type="text"
+            className="form-control"
+            value={this.state.title}
+            onChange={(e) => this.handleChange ({title: e.target.value})} required />
+        </label>
+        {/* RATING */}
+        <label htmlFor="rating">
+          Rating:
+          <input
+            name="rating"
+            id="rating"
+            type="text"
+            className="form-control"
+            value={this.state.rating}
+            onChange={(e) => this.handleChange ({rating: e.target.value})} required /> 
+        </label>
         <button className="btn btn-primary" type="button" onClick={(e) => this.create(e)}>
-          Add
+          Add Book
         </button> 
         {/* NEW -- END  */}
       </div>
@@ -83,4 +107,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default BookControl;
