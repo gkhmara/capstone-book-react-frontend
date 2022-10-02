@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-class BookControl extends React.Component {
+const BookControl = () => {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      books: [],
-      title: '',
-      author: '',
-      rating: '',
-      id: ''
-    }
+  const initialState = {
+    books: [],
+    title: '',
+    author: '',
+    rating: '',
+    id: '',
+    search: ''
   }
 
-  componentDidMount = () => {
+  const [state, setState] = useState(initialState);
 
-    fetch(`http://localhost:3001/api/v1/books`)
-      .then(response => response.json())
-      .then(books => this.setState({ books }));
-  }
+  const getBooks = (sortCriteria) => {
+    fetch(`http://localhost:3001/api/v1/books?sort=${sortCriteria}&search=${state.search}`)
+    .then(response => response.json())
+    .then(books => setState({ ...state, books }));
+  };
+
+
+  useEffect(() => {
+    getBooks();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   //CREATE -- START
-  create = (e) => {
+  const create = (e) => {
     // e.prevent.Default();
     fetch(`http://localhost:3001/api/v1/books`, {
       "method": "POST",
@@ -32,13 +38,14 @@ class BookControl extends React.Component {
         "accept": "application/json"
       },
       "body": JSON.stringify({
-        author: this.state.author,
-        title: this.state.title,
-        rating: this.state.rating
+        author: state.author,
+        title: state.title,
+        rating: state.rating
       })
     })
     .then(response => response.json())
     .then(response => {
+      getBooks();
       console.log(response)
     })
     .catch(err => {
@@ -48,22 +55,23 @@ class BookControl extends React.Component {
   //CREATE -- END
 
   //UPDATE -- START
-  update(e) {
-    fetch(`http://localhost:3001/api/v1/books/${this.state.id}`, {
+  const update = (e) => {
+    fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
       "method": "PUT",
       "headers": {
         "content-type": "application/json",
         "accept": "application/json"
       },
       "body": JSON.stringify({
-        _id: this.state.id,
-        author: this.state.author,
-        title: this.state.title,
-        rating:this.state.rating
+        _id: state.id,
+        author: state.author,
+        title: state.title,
+        rating:state.rating
       })
     })
     .then(response => response.json())
     .then(response => {
+      getBooks();
       console.log(response)
     })
     .catch(err => {
@@ -73,12 +81,13 @@ class BookControl extends React.Component {
   //UPDATE --END
 
   //DELETE --START
-  delete(e) {
-    fetch(`http://localhost:3001/api/v1/books/${this.state.id}`, {
+  const deleteBook = (e) => {
+    fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
       "method": "DELETE",
     })
     .then(response => response.json())
     .then(response => {
+      getBooks();
       console.log(response);
     })
     .catch(err => {
@@ -89,89 +98,107 @@ class BookControl extends React.Component {
 
 
   //HANDLE CHANGE --START
-  handleChange(changeObject) {
-    this.setState(changeObject)
+  const handleChange = (changeObject) => {
+    console.log(changeObject);
+    setState({...state, ...changeObject});
   }
   //HANDLE CHANGE --END
 
 
-  render() {
+    let currentlyVisibleState = null;
+
+    const handleSort = (sortName) => {
+      getBooks(sortName);
+    }
+
+    
+
     return (
-      //View All Books
-      <div className="container">
-        <h1>All Books</h1>
-        {this.state.books.map((book, index) => 
-          <li key={index}>
-            <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating} - ID: {book.id}</h3>
-          </li>
-        )}
-        <hr />
-        <form className="d-flex flex-column">
-          <legend className="text-center">Add-Update-Delete Book</legend>
-          <h1>Input Book</h1>
-          {/* AUTHOR */}
-          <label htmlFor="author">
-            Author Name:
-            <input
-              name="author"
-              id="author"
-              type="text"
-              className="form-control"
-              value={this.state.author}
-              onChange={(e) => this.handleChange ({author: e.target.value})} 
-              required
-            />
-          </label>
-          {/* TITLE */}
-          <label htmlFor="title">
-            Title:
-            <input
-              name="title"
-              id="title"
-              type="text"
-              className="form-control"
-              value={this.state.title}
-              onChange={(e) => this.handleChange ({title: e.target.value})} 
-              required 
-            />
-          </label>
-          {/* RATING */}
-          <label htmlFor="rating">
-            Rating:
-            <input
-              name="rating"
-              id="rating"
-              type="text"
-              className="form-control"
-              value={this.state.rating}
-              onChange={(e) => this.handleChange ({rating: e.target.value})} required /> 
-          </label>
-          {/* ID */}
-          <label htmlFor="id">
-            Book ID:
-            <input
-              name="id"
-              id="id"
-              type="text"
-              className="form-control"
-              value={this.state.id}
-              onChange={(e) => this.handleChange({id: e.target.value})}
-            />
-          </label>
-          <button className="btn btn-primary" type="button" onClick={(e) => this.create(e)}>
-            Add Book
-          </button>
-          <button className="btn btn-info" type="button" onClick={(e) => this.update(e)}>
-            Update Book
-          </button>
-          <button className="btn btn-danger" type="button" onClick={(e) => this.delete(e)}>
-            Delete Book
-          </button> 
-        </form>
-      </div>
-      
+      <>
+        {currentlyVisibleState} {/* --NEW => LOOK HERE */}
+        {/* View All Books */}
+
+        <div className="container">
+        <Stack spacing={2} direction="row">
+          <Button variant="contained" onClick={() => handleSort("author")}>sort by author</Button>
+          <Button variant="contained" onClick={() => handleSort("title")}>sort by title</Button>
+          <Button variant="contained" onClick={() => handleSort("rating")}>sort by rating</Button>
+        </Stack>
+        <input onChange={(e) => handleChange ({search: e.target.value})}/>
+        <button onClick={getBooks}>Search</button>
+
+          <h1>All Books</h1>
+          {state.books?.map((book, index) => 
+            <Link to={`/books/${book.id}`} key={index}>
+              <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating} - ID: {book.id}</h3>
+            </Link>
+          )}
+          <hr />
+          <form>
+            <legend className="text-center">Add-Update-Delete Book</legend>
+            <h1>Input Book</h1>
+            {/* AUTHOR */}
+            <label htmlFor="author">
+              Author Name:
+              <input
+                name="author"
+                id="author"
+                type="text"
+                className="form-control"
+                value={state.author}
+                onChange={(e) => handleChange ({author: e.target.value})} 
+                required
+              />
+            </label>
+            {/* TITLE */}
+            <label htmlFor="title">
+              Title:
+              <input
+                name="title"
+                id="title"
+                type="text"
+                className="form-control"
+                value={state.title}
+                onChange={(e) => handleChange ({title: e.target.value})} 
+                required 
+              />
+            </label>
+            {/* RATING */}
+            <label htmlFor="rating">
+              Rating:
+              <input
+                name="rating"
+                id="rating"
+                type="text"
+                className="form-control"
+                value={state.rating}
+                onChange={(e) => handleChange ({rating: e.target.value})} required /> 
+            </label>
+            {/* ID */}
+            <label htmlFor="id">
+              Book ID:
+              <input
+                name="id"
+                id="id"
+                type="text"
+                className="form-control"
+                value={state.id}
+                onChange={(e) => handleChange({id: e.target.value})}
+              />
+            </label>
+            <button type="button" onClick={(e) => create(e)}>
+              Add Book
+            </button>
+            <button type="button" onClick={(e) => update(e)}>
+              Update Book
+            </button>
+            <button type="button" onClick={(e) => deleteBook(e)}>
+              Delete Book
+            </button> 
+          </form>
+        </div>
+      </>
     );
-  }
 }
 
 export default BookControl;

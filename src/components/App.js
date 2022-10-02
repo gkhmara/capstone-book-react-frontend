@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import BookControl from "./BookControl";
 
-function App() {
+const App = () => {
   return (
     <React.Fragment>
       <Header />
