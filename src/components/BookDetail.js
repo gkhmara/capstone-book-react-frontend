@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -14,6 +14,13 @@ const BookDetail = () => {
   const location = useLocation();
   const bookId = location.pathname.split("/")[2];
 
+  //CUSTOM NAV --START
+  const navigate = useNavigate();
+  const deleteOnClick = (e) => {
+    navigate(-1);
+    deleteBook(e);
+  }
+  //CUSTOM NAV --END
 
   const getBook = () => {
     fetch(`http://localhost:3001/api/v1/books/${bookId}`)
@@ -69,11 +76,17 @@ const BookDetail = () => {
 
   console.log(state);
 
+  
+
+
   return (
     <>
       <Box
         sx={{
           display: 'flex',
+          margin: 10,
+          // border: '1px dashed red',
+          fontSize: 100,
           flexDirection: 'column',
           alignItems: 'center',
           '& > *': {
@@ -81,15 +94,22 @@ const BookDetail = () => {
           },
         }}
       >
-        <div>{state.id}</div>
-        <div>{state.author}</div>
+        {/* <div>{state.id}</div> */}
         <div>{state.title}</div>
-        <div>{state.rating}</div>
+        <div>by {state.author}</div>
+        <div>{state.rating}/10</div>
+        <hr />
         <Button variant="contained" onClick={(e) => update(e)}>
           Update Book
         </Button>
-        <Button variant="contained" onClick={(e) => deleteBook(e)}>
+        <Button variant="contained" onClick={deleteOnClick}>
           Delete Book
+        </Button>
+        {/* <Button variant="contained" onClick={(e) => deleteBook(e)}>
+          Delete Book
+        </Button> */}
+        <Button variant="contained" onClick={() => navigate(-1)}>
+          Return to Books
         </Button>
       </Box>
     </>
