@@ -55,45 +55,45 @@ const BookControl = () => {
   //CREATE -- END
 
   //UPDATE -- START
-  const update = (e) => {
-    fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
-      "method": "PUT",
-      "headers": {
-        "content-type": "application/json",
-        "accept": "application/json"
-      },
-      "body": JSON.stringify({
-        _id: state.id,
-        author: state.author,
-        title: state.title,
-        rating:state.rating
-      })
-    })
-    .then(response => response.json())
-    .then(response => {
-      getBooks();
-      console.log(response)
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
+  // const update = (e) => {
+  //   fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
+  //     "method": "PUT",
+  //     "headers": {
+  //       "content-type": "application/json",
+  //       "accept": "application/json"
+  //     },
+  //     "body": JSON.stringify({
+  //       _id: state.id,
+  //       author: state.author,
+  //       title: state.title,
+  //       rating:state.rating
+  //     })
+  //   })
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     getBooks();
+  //     console.log(response)
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
+  // }
   //UPDATE --END
 
   //DELETE --START
-  const deleteBook = (e) => {
-    fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
-      "method": "DELETE",
-    })
-    .then(response => response.json())
-    .then(response => {
-      getBooks();
-      console.log(response);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
+  // const deleteBook = (e) => {
+  //   fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
+  //     "method": "DELETE",
+  //   })
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     getBooks();
+  //     console.log(response);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
+  // }
   //DELETE --END --NEW
 
 
@@ -125,7 +125,7 @@ const BookControl = () => {
           <Button variant="contained" onClick={() => handleSort("rating")}>sort by rating</Button>
         </Stack>
         <input onChange={(e) => handleChange ({search: e.target.value})}/>
-        <button onClick={getBooks}>Search</button>
+        <button onClick={getBooks}>Search by Author</button>
 
           <h1>All Books</h1>
           {state.books?.map((book, index) => 
@@ -186,15 +186,15 @@ const BookControl = () => {
                 onChange={(e) => handleChange({id: e.target.value})}
               />
             </label>
-            <button type="button" onClick={(e) => create(e)}>
+            <Button variant="contained"onClick={(e) => create(e)}>
               Add Book
-            </button>
-            <button type="button" onClick={(e) => update(e)}>
+            </Button>
+            {/* <button type="button" onClick={(e) => update(e)}>
               Update Book
-            </button>
-            <button type="button" onClick={(e) => deleteBook(e)}>
+            </button> */}
+            {/* <button type="button" onClick={(e) => deleteBook(e)}>
               Delete Book
-            </button> 
+            </button>  */}
           </form>
         </div>
       </>
