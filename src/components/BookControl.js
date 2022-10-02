@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
 
 const BookControl = () => {
 
@@ -119,83 +122,117 @@ const BookControl = () => {
         {/* View All Books */}
 
         <div className="container">
-        <Stack spacing={2} direction="row">
-          <Button variant="contained" onClick={() => handleSort("author")}>sort by author</Button>
-          <Button variant="contained" onClick={() => handleSort("title")}>sort by title</Button>
-          <Button variant="contained" onClick={() => handleSort("rating")}>sort by rating</Button>
-        </Stack>
-        <input onChange={(e) => handleChange ({search: e.target.value})}/>
-        <button onClick={getBooks}>Search by Author</button>
-
-          <h1>All Books</h1>
-          {state.books?.map((book, index) => 
-            <Link to={`/books/${book.id}`} key={index}>
-              <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating} - ID: {book.id}</h3>
-            </Link>
-          )}
-          <hr />
-          <form>
-            <legend className="text-center">Add-Update-Delete Book</legend>
-            <h1>Input Book</h1>
-            {/* AUTHOR */}
-            <label htmlFor="author">
-              Author Name:
-              <input
-                name="author"
-                id="author"
-                type="text"
-                className="form-control"
-                value={state.author}
-                onChange={(e) => handleChange ({author: e.target.value})} 
-                required
-              />
-            </label>
-            {/* TITLE */}
-            <label htmlFor="title">
-              Title:
-              <input
-                name="title"
-                id="title"
-                type="text"
-                className="form-control"
-                value={state.title}
-                onChange={(e) => handleChange ({title: e.target.value})} 
-                required 
-              />
-            </label>
-            {/* RATING */}
-            <label htmlFor="rating">
-              Rating:
-              <input
-                name="rating"
-                id="rating"
-                type="text"
-                className="form-control"
-                value={state.rating}
-                onChange={(e) => handleChange ({rating: e.target.value})} required /> 
-            </label>
-            {/* ID */}
-            <label htmlFor="id">
-              Book ID:
-              <input
-                name="id"
-                id="id"
-                type="text"
-                className="form-control"
-                value={state.id}
-                onChange={(e) => handleChange({id: e.target.value})}
-              />
-            </label>
-            <Button variant="contained"onClick={(e) => create(e)}>
-              Add Book
-            </Button>
-            {/* <button type="button" onClick={(e) => update(e)}>
-              Update Book
-            </button> */}
-            {/* <button type="button" onClick={(e) => deleteBook(e)}>
-              Delete Book
-            </button>  */}
-          </form>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            '& > *': {
+              m: 1,
+            },
+          }}
+        >
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            <Button onClick={() => handleSort("author")}>sort by author</Button>
+            <Button onClick={() => handleSort("title")}>sort by title</Button>
+            <Button onClick={() => handleSort("rating")}>sort by rating</Button>
+          </ButtonGroup>
+          
+          <Stack spacing={2} direction='row'>
+          <TextField id="outlined-basic" label="Search by Author" variant="outlined" 
+            onChange={(e) => handleChange ({search: e.target.value})}
+          />
+          {/* <input onChange={(e) => handleChange ({search: e.target.value})}/> */}
+          <Button variant="contained" onClick={getBooks}>Search by Author</Button>
+          </Stack>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            '& > *': {
+              m: 1,
+            },
+          }}
+        >
+            <h1>All Books</h1>
+            {state.books?.map((book, index) => 
+              <Link to={`/books/${book.id}`} key={index}>
+                <h2>{book.title}</h2>
+                <h3>by {book.author}</h3>
+                <h4>{book.rating}/10</h4>
+                {/* <hr /> */}
+                {/* <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating} - ID: {book.id}</h3> */}
+              </Link>
+            )}
+            <hr />
+            <form>
+              {/* <legend>Add-Update-Delete Book</legend> */}
+              <h1>Input Book</h1>
+              <Stack spacing={2} direction='row'>
+                {/* AUTHOR */}
+                <label htmlFor="author">
+                  {/* Author Name: */}
+                  <TextField id="outlined-basic" label="Author" variant="outlined"
+                    name="author"
+                    // id="author"
+                    type="text"
+                    className="form-control"
+                    value={state.author}
+                    onChange={(e) => handleChange ({author: e.target.value})} 
+                    required
+                  />
+                </label>
+                {/* TITLE */}
+                <label htmlFor="title">
+                  {/* Title: */}
+                  <TextField id="outlined-basic" label="Title" variant="outlined"
+                    name="title"
+                    // id="title"
+                    type="text"
+                    className="form-control"
+                    value={state.title}
+                    onChange={(e) => handleChange ({title: e.target.value})} 
+                    required 
+                  />
+                </label>
+                {/* RATING */}
+                <label htmlFor="rating">
+                  {/* Rating: */}
+                  <TextField id="outlined-basic" label="Rating" variant="outlined"
+                    name="rating"
+                    // id="rating"
+                    type="text"
+                    className="form-control"
+                    value={state.rating}
+                    onChange={(e) => handleChange ({rating: e.target.value})} required 
+                  /> 
+                </label>
+                {/* ID */}
+                {/* <label htmlFor="id">
+                  Book ID:
+                  <input
+                    name="id"
+                    id="id"
+                    type="text"
+                    className="form-control"
+                    value={state.id}
+                    onChange={(e) => handleChange({id: e.target.value})}
+                  />
+                </label> */}
+                <Button variant="contained"onClick={(e) => create(e)}>
+                  Add Book
+                </Button>
+                {/* <button type="button" onClick={(e) => update(e)}>
+                  Update Book
+                </button> */}
+                {/* <button type="button" onClick={(e) => deleteBook(e)}>
+                  Delete Book
+                </button>  */}
+              </Stack>
+            </form>
+          </Box>
         </div>
       </>
     );

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+
 
 
 
@@ -69,16 +71,27 @@ const BookDetail = () => {
 
   return (
     <>
-    <div>{state.id}</div>
-    <div>{state.author}</div>
-    <div>{state.title}</div>
-    <div>{state.rating}</div>
-    <Button variant="contained" onClick={(e) => update(e)}>
-      Update Book
-    </Button>
-    <Button variant="contained" onClick={(e) => deleteBook(e)}>
-      Delete Book
-    </Button> 
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          '& > *': {
+            m: 1,
+          },
+        }}
+      >
+        <div>{state.id}</div>
+        <div>{state.author}</div>
+        <div>{state.title}</div>
+        <div>{state.rating}</div>
+        <Button variant="contained" onClick={(e) => update(e)}>
+          Update Book
+        </Button>
+        <Button variant="contained" onClick={(e) => deleteBook(e)}>
+          Delete Book
+        </Button>
+      </Box>
     </>
   );
   
