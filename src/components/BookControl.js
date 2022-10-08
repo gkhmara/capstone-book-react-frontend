@@ -150,6 +150,7 @@ const BookControl = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
+            underline: 'none',
             alignItems: 'center',
             '& > *': {
               m: 1,
