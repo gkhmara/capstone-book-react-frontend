@@ -4,10 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
-
-
-
-
 const BookDetail = () => {
   const [state, setState] = useState({});
 
@@ -68,7 +64,7 @@ const BookDetail = () => {
       console.log(err);
     });
   }
-  //DELETE --END --NEW
+  //DELETE --END
 
   useEffect(() => {
     getBook();
@@ -76,21 +72,17 @@ const BookDetail = () => {
 
   console.log(state);
 
-  
-
-
   return (
     <>
       <Box
         sx={{
           display: 'flex',
           margin: 10,
-          // border: '1px dashed red',
           fontSize: 100,
           flexDirection: 'column',
           alignItems: 'center',
           '& > *': {
-            m: 1,
+            m: 2,
           },
         }}
       >
@@ -98,6 +90,7 @@ const BookDetail = () => {
         <div>{state.title}</div>
         <div>by {state.author}</div>
         <div>{state.rating}/10</div>
+        
         <hr />
         <Button variant="contained" onClick={(e) => update(e)}>
           Update Book
