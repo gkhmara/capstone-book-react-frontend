@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 // import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const BookDetail = () => {
   const [state, setState] = useState({});
@@ -15,60 +15,60 @@ const BookDetail = () => {
   const deleteOnClick = (e) => {
     navigate(-1);
     deleteBook(e);
-  }
+  };
   //CUSTOM NAV --END
 
   const getBook = () => {
     fetch(`http://localhost:3001/api/v1/books/${bookId}`)
-    .then(response => response.json())
-    .then(book => setState( book ));
+      .then((response) => response.json())
+      .then((book) => setState(book));
   };
 
-    //UPDATE -- START
-    const update = (e) => {
-      fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
-        "method": "PUT",
-        "headers": {
-          "content-type": "application/json",
-          "accept": "application/json"
-        },
-        "body": JSON.stringify({
-          _id: state.id,
-          author: state.author,
-          title: state.title,
-          rating:state.rating
-        })
-      })
-      .then(response => response.json())
-      .then(response => {
+  //UPDATE -- START
+  const update = (e) => {
+    fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        _id: state.id,
+        author: state.author,
+        title: state.title,
+        rating: state.rating,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
         getBook();
-        console.log(response)
+        console.log(response);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    }
-    //UPDATE --END
+  };
+  //UPDATE --END
 
   //DELETE --START
   const deleteBook = (e) => {
     fetch(`http://localhost:3001/api/v1/books/${state.id}`, {
-      "method": "DELETE",
+      method: "DELETE",
     })
-    .then(response => response.json())
-    .then(response => {
-      getBook();
-      console.log(response);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
+      .then((response) => response.json())
+      .then((response) => {
+        getBook();
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   //DELETE --END
 
   useEffect(() => {
     getBook();
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   console.log(state);
 
@@ -76,12 +76,12 @@ const BookDetail = () => {
     <>
       <Box
         sx={{
-          display: 'flex',
+          display: "flex",
           margin: 10,
           fontSize: 100,
-          flexDirection: 'column',
-          alignItems: 'center',
-          '& > *': {
+          flexDirection: "column",
+          alignItems: "center",
+          "& > *": {
             m: 2,
           },
         }}
@@ -90,7 +90,7 @@ const BookDetail = () => {
         <div>{state.title}</div>
         <div>by {state.author}</div>
         <div>{state.rating}/10</div>
-        
+
         <hr />
         <Button variant="contained" onClick={(e) => update(e)}>
           Update Book
@@ -107,11 +107,6 @@ const BookDetail = () => {
       </Box>
     </>
   );
-  
-  
 };
-
-
-
 
 export default BookDetail;
