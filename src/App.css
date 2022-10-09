@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Personal Styles */
+
+.center {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+  margin-bottom: 25px;
+}
