@@ -37,9 +37,7 @@ const BookControl = () => {
     getBooks();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  //CREATE -- START
   const create = (e) => {
-    // e.prevent.Default();
     fetch(`http://localhost:3001/api/v1/books`, {
       method: "POST",
       headers: {
@@ -62,14 +60,11 @@ const BookControl = () => {
         console.log(err);
       });
   };
-  //CREATE -- END
 
-  //HANDLE CHANGE --START
   const handleChange = (changeObject) => {
     console.log(changeObject);
     setState({ ...state, ...changeObject });
   };
-  //HANDLE CHANGE --END
 
   let currentlyVisibleState = null;
 
@@ -108,7 +103,6 @@ const BookControl = () => {
               variant="outlined"
               onChange={(e) => handleChange({ search: e.target.value })}
             />
-            {/* <input onChange={(e) => handleChange ({search: e.target.value})}/> */}
             <Button variant="contained" onClick={getBooks}>
               Search by Author
             </Button>
@@ -146,8 +140,6 @@ const BookControl = () => {
                 <h2>{book.title}</h2>
                 <h3>by {book.author}</h3>
                 <h4>{book.rating}/10</h4>
-                {/* <hr /> */}
-                {/* <h3>AUTHOR: {book.author} - TITLE: {book.title} - RATING: {book.rating} - ID: {book.id}</h3> */}
               </Link>
             </Card>
           ))}
@@ -205,12 +197,6 @@ const BookControl = () => {
               <Button variant="contained" onClick={(e) => create(e)}>
                 Add Book
               </Button>
-              {/* <button type="button" onClick={(e) => update(e)}>
-                  Update Book
-                </button> */}
-              {/* <button type="button" onClick={(e) => deleteBook(e)}>
-                  Delete Book
-                </button>  */}
             </Stack>
           </form>
         </div>
