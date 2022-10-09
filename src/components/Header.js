@@ -16,7 +16,7 @@ function Header() {
         },
         }}
       >
-        <h1>Book List</h1>
+        <h1>Book Tracker</h1>
       </Box>
     </>
   );
