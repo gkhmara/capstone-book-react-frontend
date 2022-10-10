@@ -62,7 +62,6 @@ const BookControl = () => {
   };
 
   const handleChange = (changeObject) => {
-    console.log(changeObject);
     setState({ ...state, ...changeObject });
   };
 
