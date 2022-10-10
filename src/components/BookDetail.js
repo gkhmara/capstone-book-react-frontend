@@ -72,6 +72,7 @@ const BookDetail = () => {
     setState({ ...state, ...changeObject });
   };
 
+
   useEffect(() => {
     getBook();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
